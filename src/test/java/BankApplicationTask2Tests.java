@@ -18,7 +18,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringJUnitConfig(locations = "classpath:application-context.xml")
+//I should import test-clients.xml also, right?
+@SpringJUnitConfig(locations = { "classpath:application-context.xml", "classpath:test-clients.xml" })
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class BankApplicationTask2Tests {
