@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Service
 public class BankingImpl implements Banking {
 
     @Autowired
