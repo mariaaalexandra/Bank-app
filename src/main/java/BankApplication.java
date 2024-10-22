@@ -9,8 +9,13 @@ import com.luxoft.bankapp.service.Banking;
 import com.luxoft.bankapp.model.Client.Gender;
 import com.luxoft.bankapp.service.storage.ClientRepository;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+@Configuration
+@ComponentScan("com.luxoft.bankapp")
 public class BankApplication {
 
     private static final String[] CLIENT_NAMES =
@@ -18,9 +23,8 @@ public class BankApplication {
 
     public static void main(String[] args) {
 
-        ApplicationContext context = new ClassPathXmlApplicationContext(
-                new String[] { "application-context.xml", "test-clients.xml" }
-        );
+        ApplicationContext context = new AnnotationConfigApplicationContext(BankApplication.class);
+
         Banking banking = initialize(context);
 
         workWithExistingClients(banking);
@@ -103,11 +107,12 @@ public class BankApplication {
      */
     public static Banking initialize(ApplicationContext context) {
 
-        Banking banking = (Banking) context.getBean("banking");
+        // Get the Banking bean by type
+        Banking banking = context.getBean(Banking.class);
 
-        Client client1 = (Client) context.getBean("client1");
-
-        Client client2 = (Client) context.getBean("client2");
+        // Get Client beans by type if you're using @Component or @Service annotations
+        Client client1 = context.getBean(Client.class);  // Assuming client1 is the first Client bean
+        Client client2 = context.getBean(Client.class);  // You may need to get specific beans if there are multiple
 
         banking.addClient(client1);
         banking.addClient(client2);
