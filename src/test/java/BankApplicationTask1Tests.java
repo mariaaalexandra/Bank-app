@@ -14,10 +14,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//I should import test-clients.xml also, right?
-@SpringJUnitConfig(locations = {  "classpath:test-clients.xml" })
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) //prevent application context to be null
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@SpringJUnitConfig(classes = BankApplication.class)
 public class BankApplicationTask1Tests {
     private static final String[] CLIENT_NAMES =
             {"Jonny Bravo", "Adam Budzinski", "Anna Smith"};
@@ -115,7 +114,7 @@ public class BankApplicationTask1Tests {
 
     @Test
     public void workWithExistingClientsTest() {
-        BankApplication.workWithExistingClients(banking);
+        BankApplication.workWithExistingClients(applicationContext);
 
         Client jonny = banking.getClient(CLIENT_NAMES[0]);
         assertEquals(4000, jonny.getActiveAccount().getBalance());
@@ -126,7 +125,7 @@ public class BankApplicationTask1Tests {
 
     @Test
     public void bankingServiceDemoTest() {
-        BankApplication.bankingServiceDemo(banking);
+        BankApplication.bankingServiceDemo(applicationContext);
 
         Client anna = banking.getClient(CLIENT_NAMES[2]);
         assertNotNull(anna, "banking should have client with name: " + CLIENT_NAMES[2]);
